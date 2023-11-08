@@ -1,17 +1,6 @@
-board = {1:'- - -',
-         2:'- - -',
-         3:'- - -'}
-used_positions = []
-gameOn = True
-playerOneTurn = True
-
 def change_player(player):
     global playerOneTurn
     playerOneTurn = not playerOneTurn
-
-def draw_board():
-    for i in board:
-        print(board.get(i))
 
 def check_if_game_over():
     global gameOn
@@ -59,9 +48,24 @@ def check_if_game_over():
         gameOn = False
 
     #check if tie
-    if not (rowOne.__contains__('-') or rowTwo.__contains__('-') or rowThree.__contains__('-')):
+    if not (rowOne.__contains__('-') or rowTwo.__contains__('-') or rowThree.__contains__('-')) and gameOn:
         print("This game is a tie")
+        gameOn = False
 
+def draw_board():
+    for i in board:
+        print(board.get(i))
+        
+def select_position():
+    if playerOneTurn:
+        player = 'X'
+        name = 'Player 1'
+    else:
+        player = 'O'
+        name = 'Player 2'
+    position_selection = int(input(f"{name}: Enter the position you wish to procure"))
+    return position_selection, player
+    
 def update_position(position, row, player):
     if position == 1 or position == 4 or position == 7:
         temp = list(board[row])
@@ -79,19 +83,17 @@ def update_position(position, row, player):
     check_if_game_over()
     change_player(playerOneTurn)
 
-def select_position():
-    if playerOneTurn:
-        player = 'X'
-        name = 'Player 1'
-    else:
-        player = 'O'
-        name = 'Player 2'
-    position_selection = int(input(f"{name}: Enter the position you wish to procure"))
-    return position_selection, player
-
+#initialize data
 print("\nWelcome to Tic-Tac-Toe, use the keys 1-9 which are mapped like a telephone to the grid below")
+board = {1:'- - -',
+         2:'- - -',
+         3:'- - -'}
+used_positions = []
+gameOn = True
+playerOneTurn = True
 draw_board()
 
+#start game
 while gameOn:
     position, player = select_position()
     while position in used_positions:
